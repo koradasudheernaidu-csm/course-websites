@@ -87,6 +87,9 @@ export default function CertificateForm() {
     if (!issued || typeof window === 'undefined') return '';
     return `${window.location.origin}/verify/${encodeURIComponent(issued.certificateId)}`;
   }, [issued]);
+  const walletImportUrl = issued
+    ? `ndear://certificate/import?certificateId=${encodeURIComponent(issued.certificateId)}`
+    : '';
 
   function update(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     setForm(previous => ({ ...previous, [event.target.name]: event.target.value }));
@@ -400,6 +403,15 @@ export default function CertificateForm() {
       {issued && <section className="issued-panel" aria-live="polite">
         <div className="issued-panel-title"><span className="issued-check">✓</span><div><strong>Record saved successfully</strong><small>The certificate is now available in the verification register.</small></div></div>
         <div className="issued-id"><span>Certificate reference</span><strong>{issued.certificateId}</strong></div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', marginTop: 16, padding: 16, border: '1px solid #d8c8c1', borderRadius: 14, background: '#fffaf7' }}>
+          <QRCodeSVG value={walletImportUrl} size={96} level="H" includeMargin />
+          <div style={{ flex: 1, minWidth: 210 }}>
+            <strong style={{ display: 'block', marginBottom: 6 }}>Add to NDEAR Learner Credential Wallet</strong>
+            <p style={{ margin: '0 0 8px', fontSize: 13, lineHeight: 1.5 }}>Open this page on your phone, or scan this QR from Add Credential → Scan QR code in the wallet.</p>
+            <a href={walletImportUrl} style={{ fontWeight: 700, textDecoration: 'underline' }}>Open NDEAR Wallet ↗</a>
+            <p style={{ margin: '8px 0 0', fontSize: 11, lineHeight: 1.4, color: '#8b3a40' }}>Demo integration: the imported record will remain Not Verified until cryptographic issuer signing is implemented.</p>
+          </div>
+        </div>
         <div className="issued-actions">
           <a href={verificationUrl} target="_blank" rel="noreferrer" className="action-secondary">Open verification page ↗</a>
           <button type="button" className="action-secondary" onClick={copyVerificationLink}>{copied ? 'Copied ✓' : 'Copy verification link'}</button>

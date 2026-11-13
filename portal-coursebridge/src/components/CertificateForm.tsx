@@ -63,6 +63,9 @@ export default function CertificateForm() {
 
   const verificationUrl = useMemo(() => issued && typeof window !== 'undefined'
     ? `${window.location.origin}/verify/${encodeURIComponent(issued.certificateId)}` : '', [issued]);
+  const walletImportUrl = issued
+    ? `ndear://certificate/import?certificateId=${encodeURIComponent(issued.certificateId)}`
+    : '';
 
   function update(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setForm(previous => ({ ...previous, [event.target.name]: event.target.value }));
@@ -209,7 +212,16 @@ export default function CertificateForm() {
         {error && <div className="cb-form-error" role="alert">{error}</div>}
         <div className="cb-form-submit"><div><b>Ready to create the record?</b><small>The API saves the certificate record to the shared MongoDB registry.</small></div><button className="cb-button cb-button-primary" type="submit" disabled={busy}>{busy ? 'Saving record…' : 'Create certificate'} <span>→</span></button></div>
       </form>
-      {issued && <section className="cb-issued-card" aria-live="polite"><div className="cb-issued-success"><span>✓</span><div><b>Certificate record created</b><small>The record is available in the shared demonstration register.</small></div></div><div className="cb-issued-reference"><small>CERTIFICATE REFERENCE</small><strong>{issued.certificateId}</strong></div><div className="cb-issued-bottom"><QRCodeSVG value={verificationUrl} size={96} level="H" includeMargin /><div><b>Your certificate is ready</b><p>Download the sample PDF or share the verification link.</p><a href={verificationUrl} target="_blank" rel="noreferrer">Open verification page ↗</a><button type="button" onClick={copyLink}>{copied ? 'Link copied ✓' : 'Copy verification link'}</button><button type="button" className="cb-download-button" onClick={downloadPdf}>Download certificate PDF ↓</button></div></div></section>}
+      {issued && <section className="cb-issued-card" aria-live="polite"><div className="cb-issued-success"><span>✓</span><div><b>Certificate record created</b><small>The record is available in the shared demonstration register.</small></div></div><div className="cb-issued-reference"><small>CERTIFICATE REFERENCE</small><strong>{issued.certificateId}</strong></div>        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', margin: '16px 0', padding: 16, border: '1px solid #d6e1ed', borderRadius: 14, background: '#f7fbff' }}>
+          <QRCodeSVG value={walletImportUrl} size={96} level="H" includeMargin />
+          <div style={{ flex: 1, minWidth: 210 }}>
+            <strong style={{ display: 'block', marginBottom: 6 }}>Add to NDEAR Learner Credential Wallet</strong>
+            <p style={{ margin: '0 0 8px', fontSize: 13, lineHeight: 1.5 }}>Open this page on your phone, or scan this QR from Add Credential → Scan QR code in the wallet.</p>
+            <a href={walletImportUrl} style={{ fontWeight: 700, color: '#1c5b96', textDecoration: 'underline' }}>Open NDEAR Wallet ↗</a>
+            <p style={{ margin: '8px 0 0', fontSize: 11, lineHeight: 1.4, color: '#8b3a40' }}>Demo integration: the imported record will remain Not Verified until cryptographic issuer signing is implemented.</p>
+          </div>
+        </div>
+<div className="cb-issued-bottom"><QRCodeSVG value={verificationUrl} size={96} level="H" includeMargin /><div><b>Your certificate is ready</b><p>Download the sample PDF or share the verification link.</p><a href={verificationUrl} target="_blank" rel="noreferrer">Open verification page ↗</a><button type="button" onClick={copyLink}>{copied ? 'Link copied ✓' : 'Copy verification link'}</button><button type="button" className="cb-download-button" onClick={downloadPdf}>Download certificate PDF ↓</button></div></div></section>}
     </section>
 
     <aside className="cb-preview-panel"><div className="cb-preview-heading"><div><span className="cb-kicker">DOCUMENT PREVIEW</span><h2>Course certificate</h2></div><span className="cb-live-indicator"><i /> LIVE PREVIEW</span></div>
