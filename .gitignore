@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+**/!.env.example
+
+# Next.js
+.next/
+**/.next/
+out/
+**/out/
+
+# Production builds
+dist/
+build/
+**/dist/
+**/build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel/
+**/.vercel/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local databases and backups
+*.sqlite
+*.db
+*.backup
+*.dump
